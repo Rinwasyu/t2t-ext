@@ -6,7 +6,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],
-			"js": ["src/lib/md5.js", "src/main.js"],
+			"js": ["src/lib/md5.min.js", "src/main.js"],
 			"css": ["src/main.css"]
 		}
 	],
