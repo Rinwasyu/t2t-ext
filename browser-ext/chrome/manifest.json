@@ -18,6 +18,7 @@
 		"background",
 		"storage",
 		"unlimitedStorage",
+		"contextMenus",
 		"http://*/*",
 		"https://*/*"
 	],
