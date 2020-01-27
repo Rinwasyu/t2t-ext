@@ -3,12 +3,13 @@
 let t2t_translation = false;
 let t2t_elements = [];
 let t2t_dictionary;
+let t2t_regex;
 
 let t2t_default_dic = [
 	/*
 	 * ["Pattern", "flags", "Replacement"]
 	 */
-	["(クソ|糞|くそ)", "g", '嫌な'],
+	/*["(クソ|糞|くそ)", "g", '嫌な'],
 	["^(ゴミカス|ゴミ)", "g", "嫌な"],
 	["(ゴミカス|ゴミ)($|。|」|、|\\!|！)", "g", "嫌$2"],
 	["(悪|早|遅)(過ぎ|すぎ)", "g", "$1い"],
@@ -41,7 +42,7 @@ let t2t_default_dic = [
 	["(っと|ってお)(こう|け|いて)", "g", "ってみるのはどうだろう"], // やっとこう
 	["そこまで", "g", ""],
 	["そもそも", "g", ""],
-	["(なん|何)で", "g", "どうして"],
+	["(なん|何)で", "g", "どうして"],*/
 ];
 
 let md5_default_dic = md5(JSON.stringify(t2t_default_dic));
@@ -60,19 +61,13 @@ let get_elements = function() {
 }
 
 let get_dictionary = function() {
-	// 初回または辞書変更時はデフォルト辞書をLocalStorageに保存する
-	if (md5_default_dic != md5(localStorage["t2t_dictionary"])) {
-		console.log("t2t_dictionary update");
-		localStorage["t2t_dictionary"] = JSON.stringify(t2t_default_dic);
-	}
-	
-	let dic_array = JSON.parse(localStorage["t2t_dictionary"]);
+	let dic_array = t2t_dictionary;
 	let dic_regex = [];
+	console.log(t2t_dictionary.length);
 	for (let i = 0; i < dic_array.length; i++) {
-		console.log(dic_array[i]);
 		dic_regex[i] = [
-			new RegExp(dic_array[i][0], dic_array[i][1]),
-			dic_array[i][2]
+			new RegExp(dic_array[i][0], "g"),
+			dic_array[i][1]
 		];
 	}
 	
@@ -80,9 +75,9 @@ let get_dictionary = function() {
 };
 
 let t2t = function() {
-	if (!t2t_dictionary) {
-		console.log("get_dictionary");
-		t2t_dictionary = get_dictionary();
+	if (!t2t_regex) {
+		t2t_regex = get_dictionary();
+		console.log(t2t_regex);
 	}
 	
 	console.log("t2t");
@@ -91,10 +86,12 @@ let t2t = function() {
 	
 	for (let i = 0; i < t2t_elements.length; i++) {
 		if (!t2t_elements[i].dataset.t2t_md5sum || t2t_elements[i].dataset.t2t_md5sum != md5(t2t_elements[i].innerHTML)) {
-			for (let j = 0; j < t2t_dictionary.length; j++) {
+			for (let j = 0; j < t2t_regex.length; j++) {
+				if (t2t_elements[i].innerHTML != t2t_elements[i].innerHTML.replace(t2t_regex[j][0], t2t_regex[j][1]))
+					console.log("変換！");
 				t2t_elements[i].innerHTML = t2t_elements[i].innerHTML.replace(
-						t2t_dictionary[j][0],
-						"<span class='kanyou'>" + t2t_dictionary[j][1]+"</span>"
+						t2t_regex[j][0],
+						"<span class='kanyou'>" + t2t_regex[j][1]+"</span>"
 					);
 				t2t_elements[i].dataset.t2t_md5sum = md5(t2t_elements[i].innerHTML);
 			}
@@ -103,13 +100,12 @@ let t2t = function() {
 	setTimeout(t2t, 1000);
 };
 
-//t2t_translation = true;
-//t2t();
-
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request == "Translate") {
+	if (request.action == "Translate") {
 		if (!t2t_translation) {
 			t2t_translation = true;
+			t2t_dictionary = request.dictionary;
+			console.log(t2t_dictionary);
 			t2t();
 		}
 	}
