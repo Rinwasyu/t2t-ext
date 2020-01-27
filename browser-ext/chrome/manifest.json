@@ -23,6 +23,7 @@
 		"https://*/*"
 	],
 	"browser_action": {
-		"name": "click!"
+		"name": "click!",
+		"default_popup": "src/popup.html"
 	}
 }
