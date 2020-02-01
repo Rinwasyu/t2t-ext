@@ -13,6 +13,8 @@ let get_elements = function() {
 			return document.getElementsByClassName("mesg");
 		case "www.google.com":
 			return document.getElementsByClassName("rc");
+		case "localhost:8000":
+			return document.getElementsByClassName("card-body");
 		default:
 			return document.getElementsByTagName("html");
 	}
@@ -55,6 +57,23 @@ let t2t = function() {
 			}
 		}
 	}
+	
+	t2t_elements = document.getElementsByTagName("textarea");
+	for (let i = 0; i < t2t_elements.length; i++) {
+		if (!t2t_elements[i].dataset.t2t_md5sum || t2t_elements[i].dataset.t2t_md5sum != md5(t2t_elements[i].value)) {
+			for (let j = 0; j < t2t_regex.length; j++) {
+				if (t2t_elements[i].value != t2t_elements[i].value.replace(t2t_regex[j][0], t2t_regex[j][1]))
+					console.log("変換！");
+				t2t_elements[i].value = t2t_elements[i].value.replace(
+						t2t_regex[j][0],
+						t2t_regex[j][1]
+					);
+				t2t_elements[i].dataset.t2t_md5sum = md5(t2t_elements[i].value);
+			}
+		}
+	}
+	
+	
 	setTimeout(t2t, 1000);
 };
 
