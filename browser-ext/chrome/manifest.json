@@ -6,7 +6,24 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],
-			"js": ["src/main.js"]
+			"js": ["src/lib/md5.min.js", "src/main.js"],
+			"css": ["src/main.css"]
 		}
-	]
+	],
+	"background": {
+		"scripts": ["src/background.js"]
+	},
+	"permissions": [
+		"tabs",
+		"background",
+		"storage",
+		"unlimitedStorage",
+		"contextMenus",
+		"http://*/*",
+		"https://*/*"
+	],
+	"browser_action": {
+		"name": "click!",
+		"default_popup": "src/popup.html"
+	}
 }
