@@ -1,11 +1,9 @@
 t2t-ext
 ===
-Translate to Tolerance.
+文章を、読み手にとって寛容な文章に翻訳します。
 
-## Library
-### [JavaScript-MD5](https://github.com/blueimp/JavaScript-MD5)
-License : MIT (See [LICENSE-JavaScript-MD5](LICENSE-JavaScript-MD5))
+## 仕組み
+正規表現を利用した文字列置換。  
 
 ## License
-t2t-ext is licensed under [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)  
-I am permissiveness. Please feel free to use it.
+t2t-ext is licensed under the [Creative Commons Zero v1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/)  

@@ -1,15 +1,11 @@
 let dictionary = [];
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-	//chrome.tabs.sendMessage(tab.id, "Translate");
-});
-
 chrome.contextMenus.create({
-	title: "Translate to Tolerance",
+	title: "寛容な文章に翻訳",
 	contexts: ["all"],
 	type: "normal",
 	onclick: function(info, tab) {
-		chrome.tabs.sendMessage(tab.id, {action: "Translate", dictionary: dictionary});
+		chrome.tabs.sendMessage(tab.id, {action: "t2t", dictionary: dictionary});
 	}
 });
 
@@ -22,7 +18,6 @@ chrome.runtime.getPackageDirectoryEntry(function(root) {
 			file_entry.file(function(file) {
 				let reader = new FileReader();
 				reader.addEventListener("load", function() {
-					console.log(reader.result);
 					loadDictionaries(reader.result.split("\n"));
 				});
 				reader.readAsText(file, "utf-8");
@@ -30,13 +25,12 @@ chrome.runtime.getPackageDirectoryEntry(function(root) {
 		});
 		
 		function loadDictionaries(list) {
-			console.log("loadDictionaries");
+			console.log("loading dictionaries...");
 			for (let i = 0; i < list.length; i++) {
 				dict_dir.getFile(list[i], {create:false}, function(file_entry) {
 					file_entry.file(function(file) {
 						let reader = new FileReader();
 						reader.addEventListener("load", function() {
-							console.log(reader.result);
 							let temp_dict = [];
 							let result = reader.result.split("\n");
 							for (let j = 0; j < result.length; j++) {
