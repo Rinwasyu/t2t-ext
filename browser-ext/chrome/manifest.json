@@ -1,12 +1,12 @@
 {
 	"manifest_version": 2,
 	"name": "t2t-ext",
-	"version": "0.0.1",
-	"description": "Translate to tolerance.",
+	"version": "0.0.2",
+	"description": "This extension makes sentences more calm.",
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],
-			"js": ["src/lib/md5.min.js", "src/main.js"],
+			"js": ["src/lib/spark-md5.min.js", "src/main.js"],
 			"css": ["src/main.css"]
 		}
 	],
