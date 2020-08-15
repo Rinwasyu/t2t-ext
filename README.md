@@ -5,6 +5,13 @@ t2t-ext
 ## 仕組み
 正規表現を利用した文字列置換。  
 
+## インストール
+### Chrome
+[【Chrome】インストールの仕方](https://github.com/Rinwasyu/t2t-ext/issues/5)  
+
+### その他ブラウザ
+Firefox等向けにはまだ作っていません。
+
 ## License
 t2t-ext is licensed under the [Creative Commons Zero v1.0 Universal License](https://creativecommons.org/publicdomain/zero/1.0/)  
 
