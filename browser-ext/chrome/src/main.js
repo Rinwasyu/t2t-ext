@@ -63,7 +63,6 @@ let get_elements_list = function() {
 let get_dictionary = function() {
 	let dic_array = t2t_dictionary;
 	let dic_regex = [];
-	console.log(t2t_dictionary.length);
 	for (let i = 0; i < dic_array.length; i++) {
 		dic_regex[i] = [
 			new RegExp(dic_array[i][0], "g"),

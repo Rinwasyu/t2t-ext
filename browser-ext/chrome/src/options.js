@@ -16,7 +16,6 @@ let load_default_dictionary = function() {
 			});
 			
 			function loadDictionaries(list) {
-				console.log("loading dictionaries...");
 				for (let i = 0; i < list.length; i++) {
 					dict_dir.getFile(list[i], {create:false}, function(file_entry) {
 						file_entry.file(function(file) {
@@ -34,7 +33,6 @@ let load_default_dictionary = function() {
 };
 
 chrome.runtime.sendMessage({command:"get"}, function(response) {
-	console.log(response);
 	result = response.dictionary;
 	for (let j = 0; j < result.length; j++) {
 		result[j] = result[j].join(" ");
@@ -45,8 +43,6 @@ chrome.runtime.sendMessage({command:"get"}, function(response) {
 
 window.addEventListener("load", function() {
 	document.getElementById("save_dictionary").addEventListener("click", function() {
-		console.log("sendMessage");
-		console.log(document.getElementById("dictionary").value);
 		chrome.runtime.sendMessage({command:"save", dictionary:document.getElementById("dictionary").value});
 	});
 	document.getElementById("load_default_dictionary").addEventListener("click", function() {

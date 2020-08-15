@@ -25,7 +25,6 @@ let load_default_dictionary = function() {
 			});
 			
 			function loadDictionaries(list) {
-				console.log("loading dictionaries...");
 				for (let i = 0; i < list.length; i++) {
 					dict_dir.getFile(list[i], {create:false}, function(file_entry) {
 						file_entry.file(function(file) {
@@ -48,7 +47,6 @@ let load_default_dictionary = function() {
 };
 
 chrome.storage.local.get(["dictionary"], function(items) {
-	console.log(items.dictionary);
 	if (items.dictionary) {
 		result = items.dictionary.split("\n");
 		for (let j = 0; j < result.length; j++) {
@@ -61,15 +59,12 @@ chrome.storage.local.get(["dictionary"], function(items) {
 });
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
-	console.log("onchanged:", namespace);
 	if (namespace == "local") {
-		console.log(changes.dictionary);
 		result = changes.dictionary.split("\n");
 		for (let j = 0; j < result.length; j++) {
 			result[j] = result[j].split(" ");
 		}
 		dictionary = result;
-		console.log("dictionary:", dictionary);
 	}
 });
 
@@ -80,17 +75,12 @@ let save_dictionary = function(dict) {
 		result[j] = result[j].split(" ");
 	}
 	dictionary = result;
-	console.log("dictionary:", dictionary);
 };
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log("message");
-	console.log(request);
 	if (request.command == "save") {
-		console.log("save:", request.dictionary);
 		save_dictionary(request.dictionary);
 	} else if (request.command == "get") {
-		console.log("get:", dictionary);
 		sendResponse({dictionary: dictionary});
 	}
 	return true;
