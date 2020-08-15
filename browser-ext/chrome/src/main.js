@@ -2,10 +2,10 @@ let t2t_translation = false;
 let t2t_elements_list = [];
 let t2t_dictionary;
 let t2t_regex;
-let worker_cnt = 0;
+let worker_msg_cnt = 0;
 
 function createWorkerFromString(workerCode) {
-	let blob = new Blob([ workerCode ], { type: "text/javascript" });
+	let blob = new Blob([workerCode], {type: "text/javascript"});
 	let url = URL.createObjectURL(blob);
 	return new Worker(url);
 }
@@ -40,7 +40,7 @@ worker.onmessage = function(e) {
 			html_md5sum = SparkMD5.hash(document.getElementsByTagName("body")[0].innerText);
 		}
 	}
-	worker_cnt--;
+	worker_msg_cnt--;
 };
 
 
@@ -79,7 +79,7 @@ let html_md5sum;
 let observer_function = function(mutations, observer) {
 	if (html_md5sum != SparkMD5.hash(document.getElementsByTagName("body")[0].innerText)) {
 		if (t2t_translation) {
-			if (worker_cnt == 0) {
+			if (worker_msg_cnt == 0) {
 				t2t();
 			} else {
 				setTimeout(function(){observer_function(mutations, observer)}, 100);
@@ -104,7 +104,7 @@ let t2t = function() {
 	for (let i = 0; i < t2t_elements_list.length; i++) {
 		for (let j = 0; j < t2t_elements_list[i].length; j++) {
 			worker.postMessage({list: i, id: j, str: t2t_elements_list[i][j].innerHTML, regex: t2t_regex, md5sum: t2t_elements_list[i][j].dataset.t2t_md5sum});
-			worker_cnt++;
+			worker_msg_cnt++;
 		}
 	}
 };
@@ -114,7 +114,6 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 		if (!t2t_translation) {
 			t2t_translation = true;
 			t2t_dictionary = request.dictionary;
-			console.log(t2t_dictionary);
 			t2t();
 		}
 	}

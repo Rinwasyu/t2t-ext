@@ -1,5 +1,38 @@
 let dictionary = [];
 
+let load_default_dictionary = function() {
+	// load dictionaries
+	chrome.runtime.getPackageDirectoryEntry(function(root) {
+		root.getDirectory("dict", {create:false}, function(dict_dir) {
+			// Load list.txt
+			dict_dir.getFile("list.txt", {create:false}, function(file_entry) {
+				file_entry.file(function(file) {
+					let reader = new FileReader();
+					reader.addEventListener("load", function() {
+						loadDictionaries(reader.result.split("\n"));
+					});
+					reader.readAsText(file, "utf-8");
+				});
+			});
+			
+			function loadDictionaries(list) {
+				console.log("loading dictionaries...");
+				for (let i = 0; i < list.length; i++) {
+					dict_dir.getFile(list[i], {create:false}, function(file_entry) {
+						file_entry.file(function(file) {
+							let reader = new FileReader();
+							reader.addEventListener("load", function() {
+								document.getElementById("dictionary").value = reader.result;
+							});
+							reader.readAsText(file, "utf-8");
+						});
+					});
+				}
+			}
+		});
+	});
+};
+
 chrome.runtime.sendMessage({command:"get"}, function(response) {
 	console.log(response);
 	result = response.dictionary;
@@ -15,5 +48,8 @@ window.addEventListener("load", function() {
 		console.log("sendMessage");
 		console.log(document.getElementById("dictionary").value);
 		chrome.runtime.sendMessage({command:"save", dictionary:document.getElementById("dictionary").value});
+	});
+	document.getElementById("load_default_dictionary").addEventListener("click", function() {
+		load_default_dictionary();
 	});
 });
