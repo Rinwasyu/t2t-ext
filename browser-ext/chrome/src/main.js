@@ -51,7 +51,7 @@ let get_elements_list = function() {
 		return [document.getElementsByClassName("mesg")];
 	} else if (location.host.match(/^www.google.(com|co\.\S+)$/)) {
 		return [document.getElementsByClassName("rc")];
-	} else if (location.host.match(/^.*\.?5ch.net/)) {
+	} else if (location.host.match(/^.*\.?5ch.net$/)) {
 		return [document.getElementsByClassName("message")];
 	} else if (location.host.match(/^localhost:8080$/)) { // For testing
 		return [document.getElementsByClassName("card-body")];

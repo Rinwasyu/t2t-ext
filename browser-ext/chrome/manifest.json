@@ -25,5 +25,7 @@
 	"browser_action": {
 		"name": "click!",
 		"default_popup": "src/popup.html"
-	}
+	},
+	"incognito": "split",
+	"options_page": "src/options.html"
 }
